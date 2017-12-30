@@ -9,8 +9,10 @@ if [ "$#" -lt "2" ] ; then
 fi 
  
 now=`date +%s` 
+target=""
  
 if [ "$1" = "-d" ] ; then 
+	target=`date -d "$2"`
 	until=`date -d "$2" +%s` 
 	sec_rem=`expr $until - $now` 
 	echo "-d" 
@@ -20,6 +22,7 @@ if [ "$1" = "-d" ] ; then
 fi 
  
 if [ "$1" = "-m" ] ; then 
+	target="$2"
 	until=`expr 60 \* $2` 
 	until=`expr $until + $now` 
 	sec_rem=`expr $until - $now` 
@@ -52,6 +55,7 @@ while [ $sec_rem -gt 0 ]; do
 	interval=`expr $interval - $hours` 
 	weeks=`expr $interval / 604800` 
 	echo "----------------------------" 
+	echo "Target: " $target
 	echo "Seconds: " $seconds 
 	echo "Minutes: " $minutes 
 	echo "Hours:   " $hours 
