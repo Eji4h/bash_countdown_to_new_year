@@ -22,7 +22,7 @@ if [ "$1" = "-d" ] ; then
 fi 
  
 if [ "$1" = "-m" ] ; then 
-	target="$2"
+	target="$2 Minutes"
 	until=`expr 60 \* $2` 
 	until=`expr $until + $now` 
 	sec_rem=`expr $until - $now` 
