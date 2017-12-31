@@ -32,18 +32,27 @@ if [ "$1" = "-m" ] ; then
 	fi 
 fi 
  
-_R=0
-_C=7
-tmp=0
-percent=0
-total_time=0
-col=`tput cols`
-col=$[ $col -5 ]
-
 while [ $sec_rem -gt 0 ]; do 
 	clear 
 	date 
-	let sec_rem=$sec_rem-1 
+	now=`date +%s` 
+	if [ "$1" = "-d" ] ; then 
+		until=`date -d "$2" +%s` 
+		sec_rem=`expr $until - $now` 
+		if [ $sec_rem -lt 1 ]; then 
+			echo "$2 is already history !" 
+		fi 
+	fi 
+	 
+	if [ "$1" = "-m" ] ; then 
+		until=`expr 60 \* $2` 
+		until=`expr $until + $now` 
+		sec_rem=`expr $until - $now` 
+		if [ $sec_rem -lt 1 ]; then 
+			echo "$2 is already history !" 
+		fi 
+	fi 
+ 
 	interval=$sec_rem 
 	seconds=`expr $interval % 60` 
 	interval=`expr $interval - $seconds` 
@@ -55,7 +64,7 @@ while [ $sec_rem -gt 0 ]; do
 	interval=`expr $interval - $hours` 
 	weeks=`expr $interval / 604800` 
 	echo "----------------------------" 
-	echo "Target: " $target
+	echo "Target:  " $target
 	echo "Seconds: " $seconds 
 	echo "Minutes: " $minutes 
 	echo "Hours:   " $hours 
